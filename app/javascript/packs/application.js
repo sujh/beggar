@@ -7,6 +7,9 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import "admin-lte"
+import "admin-lte/dist/css/adminlte.css"
+import "admin-lte/plugins/fontawesome-free/css/all.min.css"
 
 Rails.start()
 Turbolinks.start()
