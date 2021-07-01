@@ -1,0 +1,58 @@
+<section class="content">
+
+	<div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+      <turbo-frame id="beggar-form" target="_top"></turbo-frame>
+    </div>
+  </div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title">
+						<h3>代理源列表</h3>
+					</div>
+
+					<div class="card-tools">
+					  <turbo-frame id="t-form" target="beggar-form">
+					  	<%= button_to "添加源", new_beggar_path, method: :get, class: "btn btn-primary", data: {toggle: "modal", target:"#modal-default"} %>
+						</turbo-frame>
+					</div>
+				</div>
+
+				<div class="card-body">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>名称</th>
+								<th>运行状态</th>
+								<th>配置</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% @beggars.each_with_index do |beggar, idx| %>
+								<tr>
+									<td><%= idx + 1 %></td>
+									<td><a href="<%= beggar.site %>" target="_blank"><%= beggar.name %></a></td>
+									<td>stopped</td>
+									<td>...</td>
+									<td>
+										<div class="row">
+											<%= button_to "删除", beggar_path(beggar), method: "delete", class: "btn btn-outline-danger btn-sm", data: {confirm: "确认删除？"} %>
+										  <turbo-frame id="t-form" target="beggar-form">
+												<%= button_to "修改", edit_beggar_path(beggar), method: "get", class: "btn btn-outline-primary btn-sm", data: {toggle: "modal", target: "#modal-default"} %>
+											</turbo-frame>
+										</div>
+									</td>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
