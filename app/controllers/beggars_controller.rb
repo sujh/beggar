@@ -1,40 +1,47 @@
 class BeggarsController < ApplicationController
-	def index
-		@beggars = Beggar.all
-		render :index
-	end
+  before_action :load_beggar, only: [:edit, :update, :destroy, :run, :stop]
+  def index
+    @beggars = Beggar.all
+    render :index
+  end
 
-	def new
-		@beggar = Beggar.new
-		logger.info("!")
-		render partial: "form"
-	end
+  def new
+    @beggar = Beggar.new
+    render partial: "form"
+  end
 
-	def create
-		Beggar.create(beggar_params)
-		redirect_to beggars_url
-	end
+  def create
+    Beggar.create(beggar_params)
+    redirect_to beggars_url
+  end
 
-	def edit
-		@beggar = Beggar.find(params[:id])
-		render partial: "form"
-	end
+  def edit
+    render partial: "form"
+  end
 
-	def update
-		@beggar = Beggar.find(params[:id])
-		@beggar.update(beggar_params)
-		redirect_to beggars_url
-	end
+  def update
+    @beggar.update(beggar_params)
+    redirect_to beggars_url
+  end
 
-	def destroy
-		Beggar.find(params[:id]).destroy
-		redirect_to beggars_url
-	end
+  def destroy
+    @beggar.destroy
+    redirect_to beggars_url
+  end
 
-	private
+  def run
+  end
 
-		def beggar_params
-			params.require(:beggar).permit(:name, :site, :parser)
-		end
+  def stop
+  end
 
+  private
+
+  def beggar_params
+    params.require(:beggar).permit(:name, :site, :parser)
+  end
+
+  def load_beggar
+    @beggar = Beggar.find(params[:id])
+  end
 end
