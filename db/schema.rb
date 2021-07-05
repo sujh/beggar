@@ -15,7 +15,8 @@ ActiveRecord::Schema.define(version: 2021_06_29_150053) do
   create_table "beggars", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "site", limit: 50, null: false
-    t.string "parser"
+    t.string "parser", null: false
+    t.integer "status", limit: 1, default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
