@@ -5,7 +5,7 @@ class BegWorker
     old_proxies = Hash.new(Set.new)
     loop do
       Beggar.where(status: :ok).each do |beggar|
-        old_proxies[beggar.name] = BegService.new(beggar).run(old_proxies[beggar.name])
+        old_proxies[beggar.name] = Proxy::BegService.new(beggar, logger).run(old_proxies[beggar.name])
       end
       sleep 10
     end
