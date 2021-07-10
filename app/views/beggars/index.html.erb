@@ -1,6 +1,6 @@
 <section class="content">
 
-	<div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+	<div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
       <turbo-frame id="beggar-form" target="_top"></turbo-frame>
     </div>
@@ -15,7 +15,7 @@
 					</div>
 
 					<div class="card-tools">
-					  <turbo-frame id="t-form" target="beggar-form">
+					  <turbo-frame target="beggar-form">
 					  	<%= button_to "添加源", new_beggar_path, method: :get, class: "btn btn-primary", data: {toggle: "modal", target:"#modal-default"} %>
 						</turbo-frame>
 					</div>
@@ -42,8 +42,11 @@
 									<td>
 										<div class="row">
 											<%= button_to "删除", beggar_path(beggar), method: "delete", class: "btn btn-outline-danger btn-sm", data: {confirm: "确认删除？"} %>
-										  <turbo-frame id="t-form" target="beggar-form">
+										  <turbo-frame target="beggar-form">
 												<%= button_to "修改", edit_beggar_path(beggar), method: "get", class: "btn btn-outline-primary btn-sm", data: {toggle: "modal", target: "#modal-default"} %>
+											</turbo-frame>
+										  <turbo-frame target="alert-frame">
+												<%= button_to "运行", run_beggar_path(beggar), class: "btn btn-outline-primary btn-sm toastsDefaultDanger", data: {toggle: "modal", target: "#alert-modal"} %>
 											</turbo-frame>
 										</div>
 									</td>

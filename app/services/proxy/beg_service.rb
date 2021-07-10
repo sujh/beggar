@@ -11,13 +11,16 @@ module Proxy
     def run(old_proxies = Set.new)
       proxies = beg(5, old_proxies)
       diff_proxies = proxies - old_proxies
-      diff_proxies.each_with_object([]) do |proxy, threads|
-        threads << Thread.new do
-          @storage.store(beggar.name, proxy) if proxy_is_alive?(proxy)
-        end
-      end.each(&:join)
-      @storage.update_proxy_count(beggar.name, diff_proxies.size)
-      proxies < old_proxies ? old_proxies : proxies
+      if diff_proxies.present?
+        alive_proxies = diff_proxies.each_with_object([]) do |proxy, threads|
+          threads << Thread.new do
+            proxy if proxy_is_alive?(proxy)
+          end
+        end.map(&:value).compact
+        # 当proxies是old_proxies的子集时，说明页面未更新，此时不用刷新old_proxies
+        @storage.refresh_proxy_info(beggar.id, alive_proxies: alive_proxies, total_count: diff_proxies.count, old_proxies: proxies < old_proxies ? [] : proxies)
+      end
+      alive_proxies
     end
 
     def beg(max_page = 1, old_proxies = Set.new)

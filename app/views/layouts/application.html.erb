@@ -12,6 +12,10 @@
 
   <body class="sidebar-mini" height="height: auto">
     <div class="wrapper">
+      <div style="z-index: 2000; position: absolute; width: 100%">
+        <turbo-frame id="alert-frame" target="_top"></turbo-frame>
+      </div>
+
       <%= render partial: "layouts/aside"%>
       <%= render partial: "layouts/nav" %>
       <div class="content-wrapper">
