@@ -26,13 +26,13 @@ class BeggarsController < ApplicationController
 
   def destroy
     @beggar.destroy
+    Sidekiq::Cron::Job.find(job_name(@beggar))&.destroy
     redirect_to beggars_url
   end
 
   def run
     if check_beggar_ok?
-      job = Sidekiq::Cron::Job.new(name: "BegWorker:#{beggar.id}", cron: "0 * * * *", class: "BegWorker", args: [beggar.id])
-      BegWorker.perform_async(@beggar.id)
+      Sidekiq::Cron::Job.new(name: job_name(@beggar), cron: "*/2 * * * *", class: "BegWorker", args: [@beggar.id]).save
       @beggar.update(status: :running)
       @alert = {type: "success", title: "成功", body: "代理源配置检测无异常，加入执行队列"}
     else
@@ -42,7 +42,7 @@ class BeggarsController < ApplicationController
   end
 
   def stop
-    Sidekiq.cancel!(@beggar.jid)
+    Sidekiq::Cron::Job.find(job_name(@beggar))&.destroy
     @beggar.update(status: :stopped)
     @alert = {type: "success", title: "成功", body: "从执行队列剔除"}
     render partial: "shared/alert"
@@ -63,5 +63,9 @@ class BeggarsController < ApplicationController
     !!Proxy::BegService.new(@beggar).beg
   rescue
     false
+  end
+
+  def job_name(beggar)
+    "BegWorker:#{beggar.id}"
   end
 end

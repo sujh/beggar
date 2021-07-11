@@ -25,7 +25,7 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>#</th>
+								<th></th>
 								<th>名称</th>
 								<th>状态</th>
 								<th>配置</th>
@@ -46,7 +46,10 @@
 												<%= button_to "修改", edit_beggar_path(beggar), method: "get", class: "btn btn-outline-primary btn-sm", data: {toggle: "modal", target: "#modal-default"} %>
 											</turbo-frame>
 										  <turbo-frame target="alert-frame">
-												<%= button_to "运行", run_beggar_path(beggar), class: "btn btn-outline-primary btn-sm toastsDefaultDanger", data: {toggle: "modal", target: "#alert-modal"} %>
+												<%= button_to "运行", run_beggar_path(beggar), class: "btn btn-outline-primary btn-sm" %>
+											</turbo-frame>
+                      <turbo-frame target="alert-frame">
+												<%= button_to "停止", stop_beggar_path(beggar), class: "btn btn-outline-warning btn-sm" %>
 											</turbo-frame>
 										</div>
 									</td>
