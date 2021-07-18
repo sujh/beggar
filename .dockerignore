@@ -1,0 +1,10 @@
+Dockerfile
+tmp
+log
+node_modules
+public/packs
+public/assets
+storage
+.vscode
+.byebug_history
+.git
